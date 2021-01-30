@@ -7,29 +7,37 @@
 
 <body>
     <style>
-        h1 {
-            color: pink;
+        .hot a {
+            color: red;
         }
-        p {
-            color: green;
+
+        .cold a {
+            color: blue;
         }
-        div {
-            color: yellow;
-        }
-        a {
-            color: black;
+
+        p:nth-child(2) {
+            background: red;
         }
     </style>
-    <h1>Welcome to CSS</h1>
-    <p>Use css to add visual styles to your document</p>
-    <p>For example you can select all paragraphs</p>
-    <p>and make them Green</p>
-    <div>Or maybe you can select</div>
-    <div>all the div elements</div>
-    <div>and make them yellow</div>
-    <a href="#">Even Links</a>
-    <a href="#">Can change</a>
-    <a href="#">Their color</a>
+    <div class="cold">
+        <a href="#">Link inside a div 1</a>
+        <p>
+            <a href="#">Link inside a paragraph inside a div</a>
+        </p>        
+        <p>
+            <a href="#">Link inside a paragraph inside a div</a>
+        </p>
+        <p>
+            <a href="#">Link inside a paragraph inside a div</a>
+        </p>
+    </div>
+    <hr>
+    <div class="hot">
+        <a href="#">Link inside a div 2</a>
+        <p>
+            <a href="#">Link inside a paragraph inside a div</a>
+        </p>
+    </div>
 </body>
 
 </html>
