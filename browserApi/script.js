@@ -56,6 +56,7 @@ const greet = function (name) {
 
 setInterval(greet, 4000, 'John');
 */
+/*
 // window.onload = () => {
     const header = document.getElementsByTagName('h1');
     console.log("header", header);
@@ -63,3 +64,77 @@ setInterval(greet, 4000, 'John');
         console.log(header[i].innerHTML);
     };
 // }
+*/
+
+/*
+console.log("Window", window);
+
+console.log("Trying to close the window");
+window.alert("This will close after you click OK");
+window.close();
+*/
+
+/*
+const pOne = document.getElementById('paragraph_one');
+console.log("I'm outside the onload", document, pOne);
+window.onload = function(){
+    const pOne_1 = document.getElementById('paragraph_one');
+    console.log("I'm INSIDE the onload", document, pOne_1);
+}
+*/
+/*
+window.onload = function () {
+    const div = document.querySelectorAll('div');
+    const span = document.querySelector('span');
+
+    console.log(div); // <div class="red">Hi I'm div number 1</div>
+    console.log(span); // <span class="red">Hi I'm span number 2</span>
+}
+*/
+
+/*
+window.onload = function () {
+    var colorPreference = "red";
+    const p = document.querySelector('p');
+    console.log("P Element", p);
+    console.log("P Element Attributes", p.attributes);
+    console.log("P Element Attributes[0]", p.attributes[0]);
+    console.log("P Element Attributes[0].name", p.attributes[0].name);
+    console.log("P Element Attributes[0].value", p.attributes[0].value);
+
+    console.log("P Element Attributes[1]", p.attributes[1]);
+    console.log("P Element Attributes[1].name", p.attributes[1].name);
+    console.log("P Element Attributes[1].value:BEFORE", p.attributes[1].value);
+
+    function convertPToRed(){
+        p.attributes[1].value = colorPreference;
+        console.log("P Element Attributes[1].value:AFTER", p.attributes[1].value);
+    }
+    
+    setTimeout(convertPToRed, 2000);
+}
+
+*/
+
+function getColor() {
+    const colors = ['red', 'green', 'blue'];
+    var randomNumber = Math.floor(Math.random() * colors.length);
+    return colors[randomNumber];
+}
+
+function getElement(selector) {
+    return {
+        element: document.querySelector(selector),
+        color: getColor()
+    }
+}
+
+window.onload = function () {
+    function convertPToColorPreference() {
+        const p = getElement('p');
+        const classList = p.element.classList;
+        p.element.classList.remove(classList.item(0));
+        p.element.classList.add(p.color);
+    }
+    setInterval(convertPToColorPreference, 2000);
+}

@@ -2,15 +2,33 @@
 <html>
     <head>
         <title>Running from my local server</title>        
-        <script src="script.js" defer></script>
+        <script src="script.js"></script>
         <script src="script2.js"></script>
         <script src="script3.js"></script>
     </head>
     <body>
-        <h1>1111: Hello everyone!</h1>
-        <p>Now we are using a live server</p>
-        <h1>2222: Hello everyone!</h1>
-        <h1>3333: Hello everyone!</h1>
-        <h1>4444: Hello everyone!</h1>        
+        <style>
+            .red {
+                color: red;
+            }
+            .green {
+                color: green;
+            }
+            .blue {
+                color: blue;
+            }
+            .default {
+                color: black;
+            }
+        </style>
+        <h1>Hello everyone!</h1>
+        <p id="paragraph_one">Now we are using a live server</p>            
+        <div class="red">Hi I'm div number 1</div>
+        <div>Hi I'm div number 2</div>
+        <span>Hi I'm span number 1</span>
+        <span class="red">Hi I'm span number 2</span>
+        <div>Hi I'm div number 3
+            <div>And I am number 3 child</div>
+        </div>
     </body>
 </html>
