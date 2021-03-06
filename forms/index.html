@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>Forms</title>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <form action="save_user.html" method="post" enctype="application/x-www-form-urlencoded" name="login">
+        <div>
+            Name: <input type="text" class="form-control" id="username" name="username" />
+        </div>
+        <div>
+            Label: <input type="password" class="form-control" id="pass" name="pass" />
+        </div>
+        <hr />
+        <div>
+            Country:
+            <select name="countries" id="countries" class="form-control">
+                <option value="ar">Argentina</option>
+                <option value="br">Brazil</option>
+                <option value="ca">Canada</option>
+                <option value="cl">Chile</option>
+            </select>
+        </div>
+        <div>
+            <input type="checkbox" name="sex" value="f" checked> Female
+            <input type="checkbox" name="sex" value="m"> Male
+        </div>
+        <input type="submit" class="btn btn-primary" name="submit" value="Send" />
+    </form>
+</body>
+
+</html>
