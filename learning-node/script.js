@@ -1,0 +1,1 @@
+const name="John Rambo";const age=34;console.log("Hello my name is",name);console.log("Hello my age is",age);
