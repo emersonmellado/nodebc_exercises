@@ -38,12 +38,18 @@ app.get('/create', (req, res) => {
 app.post('/create', urlencodedParser, (req, res) => {
     const body = req.body;
     products.push(body);
-    res.send(`Product count ${products.length}`)
+    res.redirect('/');
 })
 
 app.get('/:id', (req, res) => {
     const product = products.find(p => p.id == req.params.id)
     res.render('details', { product: product })
+})
+
+app.get('/delete/:id', (req, res) => {
+    const productIndex = products.findIndex(p => p.id == req.params.id)
+    products.splice(productIndex, 1);
+    res.redirect('/');
 })
 
 app.listen(port, () => {
