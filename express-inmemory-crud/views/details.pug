@@ -1,0 +1,11 @@
+extend ./template.pug
+
+block content
+    a.btn.btn-primary(href='/') Home
+    hr
+    .row
+        .card(style='width: 18rem;')
+            img.card-img-top(src=product.image alt=product.name)
+            .card-body
+                h5.card-title= product.name
+                p.card-text= product.description

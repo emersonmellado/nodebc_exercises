@@ -1,0 +1,28 @@
+extend ./template.pug
+
+block content
+    a.btn.btn-primary(href='/') Home
+    hr
+    h1 Create a new product
+    hr
+    form(method="post" action="/create")
+        .form-group.row
+            label.col-sm-2.col-form-label(for='id') Id
+            .col-sm-10
+                input#id.form-control(type='text' name="id")
+        .form-group.row
+            label.col-sm-2.col-form-label(for='name') Name
+            .col-sm-10
+                input#name.form-control(type='text' name="name")
+        .form-group.row
+            label.col-sm-2.col-form-label(for='image') Image
+            .col-sm-10
+                input#image.form-control(type='text' name="image")
+        .form-group.row
+            label.col-sm-2.col-form-label(for='description') Description
+            .col-sm-10
+                input#description.form-control(type='text' name="description")
+
+        .form-group.row
+            .col-sm-10
+                button.btn.btn-primary(type='submit') Save
