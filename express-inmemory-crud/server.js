@@ -46,24 +46,11 @@ app.post("/create", urlencodedParser, (req, res) => {
   products.push(body);
   res.redirect("/");
 });
-
-// Handles post update
-app.get("/update/:id", (req, res) => {
-  const productIndex = products.findIndex((p) => p.id == req.params.id);
-  const product = products[productIndex];
-  res.render("update", { product: product });
-});
-
-app.post("/update/:id", urlencodedParser, (req, res) => {
-  const productIndex = products.findIndex((p) => p.id == req.params.id);
-  let tempProduct = products[productIndex]
-  const body = req.body;
-  tempProduct = {...tempProduct, ...body}
-
-  products.splice(productIndex, 1, tempProduct)
-  res.redirect(`/${req.params.id}`);
-});
-// End of update section
+app.post('/create', urlencodedParser, (req, res) => {
+    const body = req.body;
+    products.push(body);
+    res.redirect('/');
+})
 
 app.get("/:id", (req, res) => {
   const product = products.find((p) => p.id == req.params.id);
@@ -75,6 +62,12 @@ app.get("/delete/:id", (req, res) => {
   products.splice(productIndex, 1);
   res.redirect("/");
 });
+
+app.get('/delete/:id', (req, res) => {
+    const productIndex = products.findIndex(p => p.id == req.params.id)
+    products.splice(productIndex, 1);
+    res.redirect('/');
+})
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
