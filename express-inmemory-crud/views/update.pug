@@ -1,0 +1,25 @@
+extend ./template.pug
+
+block content
+    a.btn.btn-primary(href='/') Home
+    hr
+    h1 Update product
+    hr
+    form(method="post" action=`/update/${product.id}`)
+        .form-group.row
+            label.col-sm-2.col-form-label(for='name') Name
+            .col-sm-10
+                input#name.form-control(type='text' name="name" value=product.name)
+        .form-group.row
+            label.col-sm-2.col-form-label(for='image') Image
+            .col-sm-10
+                input#image.form-control(type='text' name="image" value=product.image)
+        .form-group.row
+            label.col-sm-2.col-form-label(for='description') Description
+            .col-sm-10
+                input#description.form-control(type='text' name="description" value=product.description)
+
+        .form-group.row
+            .col-sm-10
+                a.btn.btn-danger(href=`/${product.id}` style="margin-right: 20px") Cancel 
+                button.btn.btn-primary(type='submit') Save
