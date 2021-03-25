@@ -6,6 +6,7 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     const superheroes = [
+        { name: 'BATMAN', image: 'batman.jpg' },
         { name: 'SPIDER-MAN', image: 'spiderman.jpg' },
         { name: 'CAPTAIN MARVEL', image: 'captainmarvel.jpg' },
         { name: 'HULK', image: 'hulk.jpg' },
