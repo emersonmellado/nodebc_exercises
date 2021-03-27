@@ -1,0 +1,14 @@
+extends ./layout.pug
+
+block content
+    include ./header.pug
+    hr
+    .row
+        .card(style='width: 18rem;')
+            img.card-img-top(src='/img/' + superhero.image alt=superhero.name)
+            .card-body
+                form(action="/superheroes", method="post")
+                    input(type="hidden" name="id" id="id" value=superhero.id)
+                    input(type="text", value=superhero.name placeholder="superhero name", required="required", name="superhero")
+                    button Update
+                a(href="/superheroes/delete/" + superhero.id class="btn btn-danger") Delete
