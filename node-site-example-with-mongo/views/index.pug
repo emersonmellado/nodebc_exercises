@@ -1,0 +1,13 @@
+extends ./layout.pug
+
+block content
+  include ./header.pug
+  include ./create.pug
+  hr
+  .row
+    each superheroe in superheroes
+      a(href="/superheroes/" + superheroe.id)
+        .card(style='width: 18rem;')
+          img.card-img-top(src='/img/' + superheroe.image alt=superheroe.name)
+          .card-body
+            h5.card-title= superheroe.name
