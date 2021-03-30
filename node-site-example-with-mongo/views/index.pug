@@ -6,7 +6,7 @@ block content
   hr
   .row
     each superheroe in superheroes
-      a(href="/superheroes/" + superheroe.id)
+      a(href="/superheroes/" + superheroe._id)
         .card(style='width: 18rem;')
           img.card-img-top(src='/img/' + superheroe.image alt=superheroe.name)
           .card-body

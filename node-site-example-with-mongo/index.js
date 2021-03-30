@@ -6,67 +6,101 @@ const port = 3000;
 app.set('view engine', 'pug');
 app.use(express.static('public'));
 
-const superheroes = [
-    { id: 1, name: 'SPIDER-MAN', image: 'spiderman.jpg' },
-    { id: 2, name: 'CAPTAIN MARVEL', image: 'captainmarvel.jpg' },
-    { id: 3, name: 'HULK', image: 'hulk.jpg' },
-    { id: 4, name: 'THOR', image: 'thor.jpg' },
-    { id: 5, name: 'IRON MAN', image: 'ironman.jpg' },
-    { id: 6, name: 'DAREDEVIL', image: 'daredevil.jpg' },
-    { id: 7, name: 'BLACK WIDOW', image: 'blackwidow.jpg' },
-    { id: 8, name: 'CAPTAIN AMERICA', image: 'captainamerica.jpg' },
-    { id: 9, name: 'WOLVERINE', image: 'wolverine.jpg' },
-];
+const MongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
+const url = 'mongodb://localhost:27017';
+
+MongoClient.connect(url, function (err, client) {
+    console.log("Connected successfully to MONGO server");
+});
 
 app.get('/', (req, res) => {
-    res.render('index', { superheroes: superheroes });
+    MongoClient.connect(url, function (err, client) {
+        const db = client.db('comics');
+        const collection = db.collection('superheroes');
+
+        collection.find({}).toArray((error, documents) => {
+            client.close();
+            res.render('index', { superheroes: documents });
+        });
+    });
 });
 
 app.get('/superheroes', (req, res) => {
-    res.render('superhero', { superheroes: superheroes });
+    MongoClient.connect(url, function (err, client) {
+        const db = client.db('comics');
+        const collection = db.collection('superheroes');
+
+        collection.find({}).toArray((error, documents) => {
+            client.close();
+            res.render('superhero', { superheroes: documents });
+        });
+    });
 });
 
 app.get('/superheroes/:id', (req, res) => {
     const selectedId = req.params.id;
+    MongoClient.connect(url, function (err, client) {
+        const db = client.db('comics');
+        const collection = db.collection('superheroes');
 
-    let selectedSuperhero = superheroes.filter(superhero => {
-        return superhero.id === +selectedId;
+        collection.find({ "_id": ObjectID(selectedId) }).toArray((error, documents) => {
+            console.log("documents", documents);
+            client.close();
+            res.render('superhero', { superhero: documents[0] });
+        });
     });
-
-    selectedSuperhero = selectedSuperhero[0];
-
-    res.render('superhero', { superhero: selectedSuperhero });
 });
 
 app.get('/superheroes/delete/:id', (req, res) => {
     const selectedId = req.params.id;
+    MongoClient.connect(url, function (err, client) {
+        const db = client.db('comics');
+        const collection = db.collection('superheroes');
 
-    let selectedSuperheroIndex = superheroes.findIndex(superhero => superhero.id == selectedId);
+        collection.deleteOne({ "_id": ObjectID(selectedId) });
+        res.redirect('/');
+    });
+});
 
-    superheroes.splice(selectedSuperheroIndex, 1);
+app.post('/superheroes/update', urlencodedParser, (req, res) => {
+    MongoClient.connect(url, function (err, client) {
+        const updatedId = req.body.id;
+        const db = client.db('comics');
+        const collection = db.collection('superheroes');
 
-    res.redirect('/');
+        const filter = { "_id": ObjectID(updatedId) };
+        const update = { $set: { name: req.body.superhero.toUpperCase()} };
+
+        collection.updateOne(filter, update);
+
+        res.redirect('/');
+    });
 });
 
 app.post('/superheroes', urlencodedParser, (req, res) => {
-    console.log("Trying to update");
-    const updatedId = req.body.id; 
-    let selectedSuperheroIndex = superheroes.findIndex(superhero => superhero.id == updatedId);
-    superheroes[selectedSuperheroIndex].name = req.body.superhero.toUpperCase()
-    res.redirect('/');
-});
 
-app.post('/superheroes', urlencodedParser, (req, res) => {
-    const newId = superheroes[superheroes.length - 1].id + 1;
-    const newSuperHero = {
-        id: newId,
-        name: req.body.superhero.toUpperCase(),
-        image: 'lukecage.jpg'
-    }
+    MongoClient.connect(url, function (err, client) {
+        const db = client.db('comics');
+        const collection = db.collection('superheroes');
 
-    superheroes.push(newSuperHero);
+        collection.insertOne({
+            name: req.body.superhero.toUpperCase(),
+            image: 'lukecage.jpg'
+        });
+        res.redirect('/');
+    });
 
-    res.redirect('/');
+    // const newId = superheroes[superheroes.length - 1].id + 1;
+    // const newSuperHero = {
+    //     id: newId,
+    //     name: req.body.superhero.toUpperCase(),
+    //     image: 'lukecage.jpg'
+    // }
+
+    // superheroes.push(newSuperHero);
+
+    // res.redirect('/');
 });
 
 app.listen(port, () => {
