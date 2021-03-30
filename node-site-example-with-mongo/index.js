@@ -86,21 +86,10 @@ app.post('/superheroes', urlencodedParser, (req, res) => {
 
         collection.insertOne({
             name: req.body.superhero.toUpperCase(),
-            image: 'lukecage.jpg'
+            image: req.body.superhero_image,
         });
         res.redirect('/');
     });
-
-    // const newId = superheroes[superheroes.length - 1].id + 1;
-    // const newSuperHero = {
-    //     id: newId,
-    //     name: req.body.superhero.toUpperCase(),
-    //     image: 'lukecage.jpg'
-    // }
-
-    // superheroes.push(newSuperHero);
-
-    // res.redirect('/');
 });
 
 app.listen(port, () => {
