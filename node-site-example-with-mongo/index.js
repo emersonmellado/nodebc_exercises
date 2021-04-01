@@ -6,90 +6,61 @@ const port = 3000;
 app.set('view engine', 'pug');
 app.use(express.static('public'));
 
-const MongoClient = require('mongodb').MongoClient;
-const ObjectID = require('mongodb').ObjectID;
-const url = 'mongodb://localhost:27017';
+//Import the mongoose module
+var mongoose = require('mongoose');
 
-MongoClient.connect(url, function (err, client) {
-    console.log("Connected successfully to MONGO server");
+//Set up default mongoose connection
+var mongoDB = 'mongodb://127.0.0.1:27017/comics';
+mongoose.connect(mongoDB, { useNewUrlParser: true });
+
+//Get the default connection
+var db = mongoose.connection;
+
+//Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+const superHeroSchema = new mongoose.Schema({
+    name: String,
+    image: String
 });
 
-app.get('/', (req, res) => {
-    MongoClient.connect(url, function (err, client) {
-        const db = client.db('comics');
-        const collection = db.collection('superheroes');
+const SuperHeroModel = mongoose.model('SuperHeroModel', superHeroSchema);
 
-        collection.find({}).toArray((error, documents) => {
-            client.close();
-            res.render('index', { superheroes: documents });
-        });
-    });
+app.get('/', async (req, res) => {
+    const documents = await SuperHeroModel.find().exec();
+    res.render('index', { superheroes: documents });
 });
 
-app.get('/superheroes', (req, res) => {
-    MongoClient.connect(url, function (err, client) {
-        const db = client.db('comics');
-        const collection = db.collection('superheroes');
-
-        collection.find({}).toArray((error, documents) => {
-            client.close();
-            res.render('superhero', { superheroes: documents });
-        });
-    });
-});
-
-app.get('/superheroes/:id', (req, res) => {
+app.get('/superheroes/:id', async (req, res) => {
     const selectedId = req.params.id;
-    MongoClient.connect(url, function (err, client) {
-        const db = client.db('comics');
-        const collection = db.collection('superheroes');
-
-        collection.find({ "_id": ObjectID(selectedId) }).toArray((error, documents) => {
-            console.log("documents", documents);
-            client.close();
-            res.render('superhero', { superhero: documents[0] });
-        });
-    });
+    const document = await SuperHeroModel.findOne({ "_id": selectedId }).exec();
+    res.render('superhero', { superhero: document });
 });
 
-app.get('/superheroes/delete/:id', (req, res) => {
+app.get('/superheroes/delete/:id', async (req, res) => {
     const selectedId = req.params.id;
-    MongoClient.connect(url, function (err, client) {
-        const db = client.db('comics');
-        const collection = db.collection('superheroes');
-
-        collection.deleteOne({ "_id": ObjectID(selectedId) });
-        res.redirect('/');
-    });
+    await SuperHeroModel.deleteOne({ "_id": selectedId }).exec();
+    res.redirect('/');
 });
 
-app.post('/superheroes/update', urlencodedParser, (req, res) => {
-    MongoClient.connect(url, function (err, client) {
-        const updatedId = req.body.id;
-        const db = client.db('comics');
-        const collection = db.collection('superheroes');
+app.post('/superheroes/update', urlencodedParser, async (req, res) => {
+    const updatedId = req.body.id;
 
-        const filter = { "_id": ObjectID(updatedId) };
-        const update = { $set: { name: req.body.superhero.toUpperCase()} };
+    const filter = { "_id": updatedId };
+    const update = { $set: { name: req.body.superhero.toUpperCase() } };
 
-        collection.updateOne(filter, update);
+    await SuperHeroModel.updateOne(filter, update).exec();
 
-        res.redirect('/');
-    });
+    res.redirect('/');
 });
 
-app.post('/superheroes', urlencodedParser, (req, res) => {
-
-    MongoClient.connect(url, function (err, client) {
-        const db = client.db('comics');
-        const collection = db.collection('superheroes');
-
-        collection.insertOne({
-            name: req.body.superhero.toUpperCase(),
-            image: req.body.superhero_image,
-        });
-        res.redirect('/');
-    });
+app.post('/superheroes', urlencodedParser, async (req, res) => {
+    const newHero = {
+        name: req.body.superhero.toUpperCase(),
+        image: req.body.superhero_image,
+    }
+    await SuperHeroModel.create(newHero);
+    res.redirect('/');
 });
 
 app.listen(port, () => {
